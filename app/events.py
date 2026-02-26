@@ -8,10 +8,10 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Callable
 
-# In-memory event log (acts as a simple event store for demo purposes)
+
 event_log: list[dict] = []
 
-# Handler registry: event_type -> list of callables
+
 _handlers: dict[str, list[Callable]] = defaultdict(list)
 
 
@@ -34,8 +34,6 @@ def publish_event(event_type: str, payload: dict):
         handler(payload)
 
 
-# ── Handlers ────────────────────────────────────────────────────────────────
-
 def _on_order_created(payload: dict):
     print(f"  [HANDLER] Notifying customer: order #{payload['order_id']} received, looking for a courier...")
 
@@ -49,7 +47,6 @@ def _on_order_delivered(payload: dict):
     print(f"  [HANDLER] Order #{payload['order_id']} delivered. Triggering rating prompt for customer.")
 
 
-# Register handlers at import time
 subscribe("order_created", _on_order_created)
 subscribe("order_assigned", _on_order_assigned)
 subscribe("order_delivered", _on_order_delivered)
